@@ -2,6 +2,9 @@
 namespace Services\Librato;
 
 require_once 'HTTP/Request2.php';
+use \HTTP_Request2 as PEARHTTP;
+use \HTTP_Request2_Response as PEARHTTP_Response;
+use \HTTP_Request2_Exception as PEARHTTP_Exception;
 
 class Metrics
 {
@@ -46,14 +49,14 @@ class Metrics
     protected function makeRequest($uri, $method = \HTTP_Request2::METHOD_GET)
     {
         try {
-            $req = new \HTTP_Request2;
+            $req = new PEARHTTP;
             $req->setAuth($this->user, $this->apiKey)
                 ->setUrl($this->endpoint . $uri)
                 ->setMethod($method);
 
             $response = $req->send();
             return $response;
-        } catch (\HTTP_Request2_Exception $e) {
+        } catch (PEARHTTP_Exception $e) {
             var_dump($e); exit;
         }
     }
@@ -63,7 +66,7 @@ class Metrics
      *
      * @return stdClass
      */
-    protected function parseResponse(\HTTP_Request2_Response $response)
+    protected function parseResponse(PEARHTTP_Response $response)
     {
         return json_decode($response->getBody());
     }
