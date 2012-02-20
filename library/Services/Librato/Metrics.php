@@ -6,14 +6,40 @@ use \HTTP_Request2 as PEARHTTP;
 use \HTTP_Request2_Response as PEARHTTP_Response;
 use \HTTP_Request2_Exception as PEARHTTP_Exception;
 
+/**
+ * @category   Services
+ * @package    Services_Librato
+ * @subpackage Services_Librato_Metrics
+ * @author     Till Klampaeckel <till@lagged.biz>
+ * @version
+ * @license
+ * @link
+ */
 class Metrics
 {
+    /**
+     * @var string $apiKey
+     */
     protected $apiKey;
 
+    /**
+     * @var string $endpoint
+     */
     protected $endpoint = 'https://metrics-api.librato.com/v1';
 
+    /**
+     * @var string $user Most likely the email address of your account.
+     */
     protected $user;
 
+    /**
+     * __construct
+     *
+     * @param string $user
+     * @param string $apiKey
+     *
+     * @return $this
+     */
     public function __construct($user, $apiKey)
     {
         $this->user   = $user;
@@ -29,13 +55,20 @@ class Metrics
             throw new \InvalidArgumentException("Cannot be empty.");
         }
 
-        $response = $this->makeRequest('/metrics/' . $name, 'DELETE');
+        $response = $this->makeRequest('/metrics/' . $name, PEARHTTP::METHOD_DELETE);
         if ($response->getStatus() == 204) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Return a metric - returns 'all' (first page) if no parameter is set.
+     *
+     * @param mixed $name
+     *
+     * @return stdClass
+     */
     public function get($name = null)
     {
         $uri = '/metrics';
@@ -46,7 +79,15 @@ class Metrics
         return $this->parseResponse($response);
     }
 
-    protected function makeRequest($uri, $method = \HTTP_Request2::METHOD_GET)
+    /**
+     * Issue a request against the REST API.
+     *
+     * @param string $uri    (absolute)
+     * @param string $method A constant from {@link \HTTP_Request}
+     *
+     * @return PEARHTTP_Response
+     */
+    protected function makeRequest($uri, $method = PEARHTTP::METHOD_GET)
     {
         try {
             $req = new PEARHTTP;
@@ -62,7 +103,9 @@ class Metrics
     }
 
     /**
-     * @param \HTTP_Request2_Response $response
+     * Parse the response!
+     *
+     * @param PEARHTTP_Response $response
      *
      * @return stdClass
      */
