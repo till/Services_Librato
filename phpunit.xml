@@ -1,0 +1,5 @@
+<phpunit colors="true" bootstrap="./TestInit.php">
+  <testsuite name="Metric">
+    <file>tests/MetricTestCase.php</file>
+  </testsuite>   
+</phpunit>
