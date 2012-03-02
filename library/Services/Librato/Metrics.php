@@ -47,6 +47,10 @@ class Metrics
     }
 
     /**
+     * Delete a metric.
+     *
+     * @param string $name Name of the metric to delete.
+     *
      * @return boolean
      */
     public function delete($name)
@@ -89,16 +93,20 @@ class Metrics
      */
     protected function makeRequest($uri, $method = PEARHTTP::METHOD_GET)
     {
+        static $req = null;
         try {
-            $req = new PEARHTTP;
-            $req->setAuth($this->user, $this->apiKey)
-                ->setUrl($this->endpoint . $uri)
-                ->setMethod($method);
+            if ($req === null) {
+                $req = new PEARHTTP;
+                $req->setAuth($this->user, $this->apiKey);
+            }
+            $response = $req->setUrl($this->endpoint . $uri)
+                ->setMethod($method)
+                ->send();
 
-            $response = $req->send();
             return $response;
+
         } catch (PEARHTTP_Exception $e) {
-            var_dump($e); exit;
+            throw Exception("Most likely a runtime issue.", null, $e);
         }
     }
 
@@ -111,6 +119,7 @@ class Metrics
      */
     protected function parseResponse(PEARHTTP_Response $response)
     {
+        // evaluate response status etc.
         return json_decode($response->getBody());
     }
 }
