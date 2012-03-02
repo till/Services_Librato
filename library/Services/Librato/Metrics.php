@@ -84,6 +84,18 @@ class Metrics
     }
 
     /**
+     * This updates a metric, or creates it.
+     *
+     * @param \Services\Librato\Metrics\Metric $metric
+     *
+     * @return $this
+     */
+    public function update(\Services\Librato\Metrics\Metric $metric)
+    {
+        
+    }
+
+    /**
      * Issue a request against the REST API.
      *
      * @param string $uri    (absolute)
@@ -99,9 +111,17 @@ class Metrics
                 $req = new PEARHTTP;
                 $req->setAuth($this->user, $this->apiKey);
             }
-            $response = $req->setUrl($this->endpoint . $uri)
-                ->setMethod($method)
-                ->send();
+            $req->setUrl($this->endpoint . $uri)
+                ->setMethod($method);
+
+            /**
+             * @desc This is a hack, but why would you not use JSON?
+             */
+            if ($method == PEARHTTP::METHOD_POST) {
+                $req->addHeader('Content-Type: application/json');
+            }
+
+            $response = $req->send();
 
             return $response;
 
