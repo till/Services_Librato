@@ -98,12 +98,13 @@ class Metrics
     /**
      * Issue a request against the REST API.
      *
-     * @param string $uri    (absolute)
-     * @param string $method A constant from {@link \HTTP_Request}
+     * @param string $uri     (absolute)
+     * @param string $method  A constant from {@link \HTTP_Request}
+     * @param mixed  $payLoad Payload.
      *
      * @return PEARHTTP_Response
      */
-    protected function makeRequest($uri, $method = PEARHTTP::METHOD_GET)
+    protected function makeRequest($uri, $method = PEARHTTP::METHOD_GET, $payLoad = null)
     {
         static $req = null;
         try {
@@ -119,6 +120,9 @@ class Metrics
              */
             if ($method == PEARHTTP::METHOD_POST) {
                 $req->addHeader('Content-Type: application/json');
+            }
+            if ($payLoad !== null) {
+                $req->setBody($payLoad);
             }
 
             $response = $req->send();
