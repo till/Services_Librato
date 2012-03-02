@@ -50,10 +50,7 @@ class Metric
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function toJson()
+    public function toArray()
     {
         $array = array('name' => $this->name);
         foreach ($this->store as $k => $v) {
@@ -62,6 +59,14 @@ class Metric
             }
             $array[$k] = $v;
         }
-        return json_encode($array);
+        return $array;
+    }
+
+    /**
+     * @return string
+     */
+    public function toJson()
+    {
+        return json_encode($this->toArray());
     }
 }
