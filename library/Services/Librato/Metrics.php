@@ -184,7 +184,6 @@ class Metrics
             }
             throw new \RuntimeException($message);
         }
-        var_dump($response->getBody()); exit;
         return $body;
     }
 }
