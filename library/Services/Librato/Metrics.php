@@ -119,10 +119,10 @@ class Metrics
              * @desc This is a hack, but why would you not use JSON?
              */
             if ($method == PEARHTTP::METHOD_POST) {
-                $req->addHeader('Content-Type: application/json');
+                $req->setHeader('Content-Type: application/json');
             }
             if ($payLoad !== null) {
-                $req->setBody($payLoad);
+                $req->setBody(json_encode($payLoad));
             }
 
             $response = $req->send();
