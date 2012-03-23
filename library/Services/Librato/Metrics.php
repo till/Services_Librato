@@ -86,13 +86,34 @@ class Metrics
     /**
      * This updates a metric, or creates it.
      *
-     * @param \Services\Librato\Metrics\Metric $metric
+     * @param array $metrics ... of \Services\Librato\Metrics\Metric.
      *
      * @return $this
      */
-    public function update(\Services\Librato\Metrics\Metric $metric)
+    public function update(array $metrics)
     {
-        
+        if (empty($metrics)) {
+            throw new \RuntimeException("...");
+        }
+
+        $gauges = array();
+
+        foreach ($metrics as $metric) {
+            if (!($metric instanceof \Services\Librato\Metrics\Metric)) {
+                throw new \InvalidArgumentException("A metric must be of type '\Services\Librato\Metrics\Metric'");
+            }
+            $gauges[] = $metric->toArray();
+        }
+        if (empty($gauges)) {
+            throw new \RuntimeException("...");
+        }
+        $payLoad  = array('gauges' => $gauges);
+        $response = $this->makeRequest('/metrics', PEARHTTP::METHOD_POST, $payLoad);
+        $body     = $this->parseResponse($response);
+        if (empty($body)) {
+            return true;
+        }
+        throw new \DomainException("Unknown response: {$body}");
     }
 
     /**
