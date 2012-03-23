@@ -1,3 +1,5 @@
 <?php
 require_once __DIR__ . '/library/Services/Librato/Autoloader.php';
-\Services\Librato\Autoloader::register();
+
+$loader = new \Services\Librato\Autoloader();
+$loader->register();
