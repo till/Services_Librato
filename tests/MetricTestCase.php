@@ -33,4 +33,13 @@ class MetricTestCase extends \PHPUnit_Framework_TestCase
         $metric = new Metric('test');
         $metric->toArray();
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testNumericValue()
+    {
+        $metric        = new Metric('string-value');
+        $metric->value = 'hello world';
+    }
 }
