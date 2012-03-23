@@ -1,6 +1,8 @@
 <?php
 namespace Services\Librato\Testing;
 
+use \Services\Librato\Metrics\Metric;
+
 class MetricTestCase extends \PHPUnit_Framework_TestCase
 {
     public function testMetric()
