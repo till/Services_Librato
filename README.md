@@ -6,6 +6,7 @@ Current work in progress: `Services\Librato\Metrics`:
 
  * delete metrics
  * publish metrics
+ * get metrics
  * check out `examples/`
 
 ## License
