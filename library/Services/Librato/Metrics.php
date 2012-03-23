@@ -6,6 +6,8 @@ use \HTTP_Request2 as PEARHTTP;
 use \HTTP_Request2_Response as PEARHTTP_Response;
 use \HTTP_Request2_Exception as PEARHTTP_Exception;
 
+use \Services\Librato\Metrics\Metric;
+
 /**
  * @category   Services
  * @package    Services_Librato
@@ -88,7 +90,9 @@ class Metrics
      *
      * @param array $metrics ... of \Services\Librato\Metrics\Metric.
      *
-     * @return $this
+     * @return true
+     * @throws \RuntimeException On empty array collection.
+     * @throws \InvalidArgumentException When the metric is not an instance of Metric.
      */
     public function update(array $metrics)
     {
@@ -99,7 +103,7 @@ class Metrics
         $gauges = array();
 
         foreach ($metrics as $metric) {
-            if (!($metric instanceof \Services\Librato\Metrics\Metric)) {
+            if (!($metric instanceof Metric)) {
                 throw new \InvalidArgumentException("A metric must be of type '\Services\Librato\Metrics\Metric'");
             }
             $gauges[] = $metric->toArray();
