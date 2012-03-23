@@ -140,10 +140,51 @@ class Metrics
      * @param PEARHTTP_Response $response
      *
      * @return stdClass
+     * @throws \RuntimeException When the API returns an error.
      */
     protected function parseResponse(PEARHTTP_Response $response)
     {
+        $json = $response->getBody();
+        $body = @json_decode($json);
+
         // evaluate response status etc.
-        return json_decode($response->getBody());
+        if ($response->getStatus() != 200) {
+
+            $message = '';
+
+            if ($body === false || $body === null) {
+                $message .= $json;
+            } else {
+
+                $errors = $body->errors;
+                foreach ($errors as $error) {
+                    if (!empty($message)) {
+                        $message .= ', ';
+                    }
+                    if (is_string($error)) {
+                        $message .= $error;
+                    } elseif ($error instanceof \stdClass) {
+                        $error = (array) $error;
+                        foreach ($error as $k => $v) {
+                            if (!empty($message)) {
+                                $message .= ', ';
+                            }
+                            $message .= "{$k}: ";
+                            if (is_array($v)) {
+                                $message .= implode(', ', $v);
+                            } else {
+                                $message .= $v;
+                            }
+                        }
+                    } else {
+                        var_dump($error); exit;
+                        $message .= implode(', ', $error);
+                    }
+                }
+            }
+            throw new \RuntimeException($message);
+        }
+        var_dump($response->getBody()); exit;
+        return $body;
     }
 }
