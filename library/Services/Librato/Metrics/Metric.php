@@ -48,6 +48,11 @@ class Metric
                 "Unknown property {$var}, we support: " . implode(', ', array_keys($this->store))
             );
         }
+        if ($var == 'value') {
+            if (!is_int($value) && !is_float($value)) {
+                throw new \InvalidArgumentException("The 'value' must be numeric.");
+            }
+        }
         $this->store[$var] = $value;
         return $this;
     }
