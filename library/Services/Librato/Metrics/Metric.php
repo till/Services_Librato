@@ -59,6 +59,9 @@ class Metric
             if ($k == 'measure_time' && $v === null) {
                 $v = time();
             }
+            if ($k == 'value' && empty($v)) {
+                throw new \LogicException("A 'value' is mandatory.");
+            }
             if (empty($v)) {
                 continue;
             }
