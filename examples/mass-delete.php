@@ -1,13 +1,19 @@
 <?php
+use \Services\Librato\Autoloader;
+use \Services\Librato\Metrics;
+
 $base = dirname(__DIR__);
-require_once $base . '/library/Services/Librato/Metrics.php';
+require_once $base . '/library/Services/Librato/Autoloader.php';
+
+$autoloader = new Autoloader();
+$autoloader->register();
 
 if (!file_exists(__DIR__ . '/config.php')) {
     die("No config - check out config.php-dist!");
 }
 $config = include __DIR__ . '/config.php';
 
-$metrics = new \Services\Librato\Metrics(
+$metrics = new Metrics(
     $config->user,
     $config->apiKey
 );
