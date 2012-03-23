@@ -3,6 +3,8 @@ namespace Services\Librato\Metrics;
 
 /**
  * This is an OO abstraction around individual metrics.
+ *
+ * @author Till Klampaeckel <till@php.net>
  */
 class Metric
 {
@@ -54,6 +56,9 @@ class Metric
     {
         $array = array('name' => $this->name);
         foreach ($this->store as $k => $v) {
+            if ($k == 'measure_time' && $v === null) {
+                $v = time();
+            }
             if (empty($v)) {
                 continue;
             }
