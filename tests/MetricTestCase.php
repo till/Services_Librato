@@ -22,6 +22,7 @@ class MetricTestCase extends \PHPUnit_Framework_TestCase
 
         $data = $metric->toArray();
         $this->assertArrayHasKey('measure_time', $data);
+        $this->assertInternalType('int', $data['measure_time']);
     }
 
     /**
