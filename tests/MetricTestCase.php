@@ -12,6 +12,15 @@ class MetricTestCase extends \PHPUnit_Framework_TestCase
         $metric->period       = '10s';
         $metric->measure_time = 'ts';
 
-        $this->assertEquals('{"name":"foo","value":10,"period":"10s"}', $metric->toJson());
+        $this->assertEquals('{"name":"foo","value":10,"measure_time":"ts","period":"10s"}', $metric->toJson());
+    }
+
+    public function testMeasureTime()
+    {
+        $metric        = new Metric('counter');
+        $metric->value = 1;
+
+        $data = $metric->toArray();
+        $this->assertArrayHasKey('measure_time', $data);
     }
 }
