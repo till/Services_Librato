@@ -23,4 +23,13 @@ class MetricTestCase extends \PHPUnit_Framework_TestCase
         $data = $metric->toArray();
         $this->assertArrayHasKey('measure_time', $data);
     }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testLogicException()
+    {
+        $metric = new Metric('test');
+        $metric->toArray();
+    }
 }
