@@ -155,7 +155,7 @@ class Metrics
             return $response;
 
         } catch (PEARHTTP_Exception $e) {
-            throw Exception("Most likely a runtime issue.", null, $e);
+            throw new Exception("Most likely a runtime issue.", null, $e);
         }
     }
 
