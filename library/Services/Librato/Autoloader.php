@@ -10,7 +10,7 @@ class Autoloader
 
     public static function load($className)
     {
-        if (strpos($className, 'Services\Librato\\') !== 0) {
+        if (strpos($className, 'Services\Librato') !== 0) {
             return false;
         }
         static $base;
