@@ -9,7 +9,7 @@ use \HTTP_Request2_Exception as HttpException;
 /**
  * @author Till Klampaeckel <till@php.net>
  */
-class Librato
+abstract class Librato
 {
     protected $req;
 
