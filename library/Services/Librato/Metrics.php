@@ -135,6 +135,7 @@ class Metrics
         try {
             if ($req === null) {
                 $req = new PEARHTTP;
+                $req->setAdapter('curl');
                 $req->setAuth($this->user, $this->apiKey);
             }
             $req->setUrl($this->endpoint . $uri)
