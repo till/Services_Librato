@@ -1,5 +1,5 @@
 <phpunit colors="true" bootstrap="./TestInit.php">
   <testsuite name="Metric">
-    <file>tests/MetricTestCase.php</file>
+    <file>tests/Services/Librato/Test/MetricTestCase.php</file>
   </testsuite>   
 </phpunit>
