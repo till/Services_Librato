@@ -1,5 +1,5 @@
 <?php
-namespace Services\Librato\Testing;
+namespace Services\Librato\Test;
 
 use \Services\Librato\Metrics\Metric;
 
