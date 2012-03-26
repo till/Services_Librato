@@ -4,6 +4,10 @@ namespace Services\Librato;
 use \Services\Librato;
 use \Services\Librato\Metrics\Metric;
 
+use \HTTP_Request2 as Request2;
+use \HTTP_Request2_Response as HttpResponse;
+use \HTTP_Request2_Exception as HttpException;
+
 /**
  * @category   Services
  * @package    Services_Librato

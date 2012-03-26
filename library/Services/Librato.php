@@ -3,8 +3,6 @@ namespace Services;
 
 require_once 'HTTP/Request2.php';
 use \HTTP_Request2 as Request2;
-use \HTTP_Request2_Response as HttpResponse;
-use \HTTP_Request2_Exception as HttpException;
 
 /**
  * @author Till Klampaeckel <till@php.net>
