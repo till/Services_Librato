@@ -1,5 +1,5 @@
 <?php
-namespace \Services\Librato;
+namespace Services\Librato;
 
 class Exception extends \Exception
 {
