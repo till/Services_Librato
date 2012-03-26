@@ -11,6 +11,10 @@ use \HTTP_Request2_Exception as HttpException;
  */
 abstract class Librato
 {
+    /**
+     * HTTP client object
+     * @var \HTTP_Request2 $req
+     */
     protected $req;
 
     /**
