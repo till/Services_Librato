@@ -1,11 +1,7 @@
 <?php
 namespace Services\Librato;
 
-require_once 'HTTP/Request2.php';
-use \HTTP_Request2 as Request2;
-use \HTTP_Request2_Response as HttpResponse;
-use \HTTP_Request2_Exception as HttpException;
-
+use \Services\Librato;
 use \Services\Librato\Metrics\Metric;
 
 /**
@@ -17,7 +13,7 @@ use \Services\Librato\Metrics\Metric;
  * @license
  * @link
  */
-class Metrics
+class Metrics extends Librato
 {
     /**
      * @var string $apiKey
@@ -131,14 +127,9 @@ class Metrics
      */
     protected function makeRequest($uri, $method = Request2::METHOD_GET, $payLoad = null)
     {
-        static $req = null;
         try {
-            if ($req === null) {
-                $req = new Request2;
-                $req->setAdapter('curl');
-                $req->setAuth($this->user, $this->apiKey);
-            }
-            $req->setUrl($this->endpoint . $uri)
+            $req = $this->getRequest($this->user, $this->apiKey)
+                ->setUrl($this->endpoint . $uri)
                 ->setMethod($method);
 
             /**
