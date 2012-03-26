@@ -2,9 +2,9 @@
 namespace Services\Librato;
 
 require_once 'HTTP/Request2.php';
-use \HTTP_Request2 as PEARHTTP;
-use \HTTP_Request2_Response as PEARHTTP_Response;
-use \HTTP_Request2_Exception as PEARHTTP_Exception;
+use \HTTP_Request2 as Request2;
+use \HTTP_Request2_Response as HttpResponse;
+use \HTTP_Request2_Exception as HttpException;
 
 use \Services\Librato\Metrics\Metric;
 
@@ -61,7 +61,7 @@ class Metrics
             throw new \InvalidArgumentException("Cannot be empty.");
         }
 
-        $response = $this->makeRequest('/metrics/' . $name, PEARHTTP::METHOD_DELETE);
+        $response = $this->makeRequest('/metrics/' . $name, Request2::METHOD_DELETE);
         if ($response->getStatus() == 204) {
             return true;
         }
@@ -112,7 +112,7 @@ class Metrics
             throw new \RuntimeException("...");
         }
         $payLoad  = array('gauges' => $gauges);
-        $response = $this->makeRequest('/metrics', PEARHTTP::METHOD_POST, $payLoad);
+        $response = $this->makeRequest('/metrics', Request2::METHOD_POST, $payLoad);
         $body     = $this->parseResponse($response);
         if (empty($body)) {
             return true;
@@ -127,14 +127,14 @@ class Metrics
      * @param string $method  A constant from {@link \HTTP_Request}
      * @param mixed  $payLoad Payload.
      *
-     * @return PEARHTTP_Response
+     * @return HttpResponse
      */
-    protected function makeRequest($uri, $method = PEARHTTP::METHOD_GET, $payLoad = null)
+    protected function makeRequest($uri, $method = Request2::METHOD_GET, $payLoad = null)
     {
         static $req = null;
         try {
             if ($req === null) {
-                $req = new PEARHTTP;
+                $req = new Request2;
                 $req->setAdapter('curl');
                 $req->setAuth($this->user, $this->apiKey);
             }
@@ -144,7 +144,7 @@ class Metrics
             /**
              * @desc This is a hack, but why would you not use JSON?
              */
-            if ($method == PEARHTTP::METHOD_POST) {
+            if ($method == Request2::METHOD_POST) {
                 $req->setHeader('Content-Type: application/json');
             }
             if ($payLoad !== null) {
@@ -155,7 +155,7 @@ class Metrics
 
             return $response;
 
-        } catch (PEARHTTP_Exception $e) {
+        } catch (HttpException $e) {
             throw new Exception("Most likely a runtime issue.", null, $e);
         }
     }
@@ -163,12 +163,12 @@ class Metrics
     /**
      * Parse the response!
      *
-     * @param PEARHTTP_Response $response
+     * @param HttpResponse $response
      *
      * @return stdClass
      * @throws \RuntimeException When the API returns an error.
      */
-    protected function parseResponse(PEARHTTP_Response $response)
+    protected function parseResponse(HttpResponse $response)
     {
         $json = $response->getBody();
         $body = @json_decode($json);
