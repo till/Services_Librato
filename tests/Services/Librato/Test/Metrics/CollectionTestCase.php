@@ -3,6 +3,7 @@ namespace Services\Librato\Test\Metrics;
 
 use \Services\Librato\Metrics\Metric;
 use \Services\Librato\Metrics\Counters;
+use \Services\Librato\Metrics\Gauges;
 
 class CollectionTestCase extends \PHPUnit_Framework_TestCase
 {
