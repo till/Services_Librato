@@ -22,11 +22,11 @@ abstract class Collection
     }
 
     /**
-     * Get a JSON-encoded string of metrics.
+     * Get an array representation of the metrics.
      *
-     * @return string
+     * @return array
      */
-    public function toJson()
+    public function toArray()
     {
         $type = str_replace(
             'services\librato\metrics\\',
@@ -40,6 +40,17 @@ abstract class Collection
         foreach ($this->metrics as $metric) {
             $response[$type][] = $metric->toArray();
         }
+        return $response;
+    }
+
+    /**
+     * Just like {@link self::toArray()}, but in JSON.
+     *
+     * @return string
+     */
+    public function toJson()
+    {
+        $response = $this->toArray();
         return json_encode($response);
     }
 }
