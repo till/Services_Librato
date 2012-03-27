@@ -8,4 +8,7 @@
   <testsuite name="Collection">
     <file>./tests/Services/Librato/Test/Metrics/CollectionTestCase.php</file>
   </testsuite>
+  <testsuite name="SuperCollection">
+    <file>./tests/Services/Librato/Test/Metrics/SuperCollectionTestCase.php</file>
+  </testsuite>
 </phpunit>
