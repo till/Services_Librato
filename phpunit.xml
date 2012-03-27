@@ -1,8 +1,11 @@
 <phpunit colors="true" bootstrap="./TestInit.php">
   <testsuite name="Metric">
-    <file>tests/Services/Librato/Test/MetricTestCase.php</file>
+    <file>./tests/Services/Librato/Test/MetricTestCase.php</file>
   </testsuite>
   <testsuite name="Metrics">
-    <file>tests/Services/Librato/Test/MetricsTestCase.php</file>
+    <file>./tests/Services/Librato/Test/MetricsTestCase.php</file>
+  </testsuite>
+  <testsuite name="Collection">
+    <file>./tests/Services/Librato/Test/Metrics/CollectionTestCase.php</file>
   </testsuite>
 </phpunit>
