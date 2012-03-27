@@ -3,6 +3,7 @@ namespace Services\Librato;
 
 use \Services\Librato;
 use \Services\Librato\Metrics\Metric;
+use \Services\Librato\Metrics\Collection;
 
 use \HTTP_Request2 as Request2;
 use \HTTP_Request2_Response as HttpResponse;
@@ -88,18 +89,45 @@ class Metrics extends Librato
     /**
      * This updates a metric, or creates it.
      *
-     * @param array $metrics ... of \Services\Librato\Metrics\Metric.
+     * The best is to supply a Collection object to get your metrics posted.
+     *
+     * @param mixed $metrics ... of \Services\Librato\Metrics\Metric.
      *
      * @return true
      * @throws \RuntimeException On empty array collection.
      * @throws \InvalidArgumentException When the metric is not an instance of Metric.
      */
-    public function update(array $metrics)
+    public function update($metrics)
     {
         if (empty($metrics)) {
-            throw new \RuntimeException("...");
+            throw new \RuntimeException("No metrics?");
         }
 
+        if (is_array($metrics)) {
+            $payLoad  = $this->convertArraytoGauges($metrics);
+        } elseif ($metrics instanceof Collection) {
+            $payLoad = $metrics->toArray();
+        } else {
+            throw new \InvalidArgumentException("The metrics have to be a stacked array or Collection object.");
+        }
+
+        $response = $this->makeRequest('/metrics', Request2::METHOD_POST, $payLoad);
+        $body     = $this->parseResponse($response);
+        if (empty($body)) {
+            return true;
+        }
+        throw new \DomainException("Unknown response: {$body}");
+    }
+
+    /**
+     * We default to gauges for simplicity.
+     *
+     * @param array $metrics
+     *
+     * @return array
+     */
+    protected function convertArrayToGauges(array $metrics)
+    {
         $gauges = array();
 
         foreach ($metrics as $metric) {
@@ -108,16 +136,8 @@ class Metrics extends Librato
             }
             $gauges[] = $metric->toArray();
         }
-        if (empty($gauges)) {
-            throw new \RuntimeException("...");
-        }
-        $payLoad  = array('gauges' => $gauges);
-        $response = $this->makeRequest('/metrics', Request2::METHOD_POST, $payLoad);
-        $body     = $this->parseResponse($response);
-        if (empty($body)) {
-            return true;
-        }
-        throw new \DomainException("Unknown response: {$body}");
+
+        return array('gauges' => $gauges);
     }
 
     /**
