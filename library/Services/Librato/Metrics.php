@@ -4,6 +4,7 @@ namespace Services\Librato;
 use \Services\Librato;
 use \Services\Librato\Metrics\Metric;
 use \Services\Librato\Metrics\Collection;
+use \Services\Librato\Metrics\SuperCollection;
 
 use \HTTP_Request2 as Request2;
 use \HTTP_Request2_Response as HttpResponse;
@@ -89,7 +90,8 @@ class Metrics extends Librato
     /**
      * This updates a metric, or creates it.
      *
-     * The best is to supply a Collection object to get your metrics posted.
+     * The best is to supply a Collection or SuperCollection object to get your
+     * metrics posted.
      *
      * @param mixed $metrics ... of \Services\Librato\Metrics\Metric.
      *
@@ -106,6 +108,8 @@ class Metrics extends Librato
         if (is_array($metrics)) {
             $payLoad  = $this->convertArraytoGauges($metrics);
         } elseif ($metrics instanceof Collection) {
+            $payLoad = $metrics->toArray();
+        } elseif ($metrics instanceof SuperCollection) {
             $payLoad = $metrics->toArray();
         } else {
             throw new \InvalidArgumentException("The metrics have to be a stacked array or Collection object.");
