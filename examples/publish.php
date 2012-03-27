@@ -1,14 +1,8 @@
 <?php
-use \Services\Librato\Autoloader;
 use \Services\Librato\Metrics;
 use \Services\Librato\Metrics\Metric;
 
-$base = dirname(__DIR__);
-require_once $base . '/library/Services/Librato/Autoloader.php';
-
-$autoloader = new Autoloader();
-$autoloader->register();
-
+require './autoload.php';
 if (!file_exists(__DIR__ . '/config.php')) {
     die("No config - check out config.php-dist!");
 }
