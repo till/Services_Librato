@@ -64,10 +64,10 @@ class Metric
             if ($k == 'measure_time' && $v === null) {
                 $v = time();
             }
-            if ($k == 'value' && empty($v)) {
+            if ($k == 'value' && $v === null) {
                 throw new \LogicException("A 'value' is mandatory.");
             }
-            if (empty($v)) {
+            if ($v === null) {
                 continue;
             }
             $array[$k] = $v;
