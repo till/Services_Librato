@@ -18,6 +18,9 @@
             "url": "http://pear.php.net"
         }
     ],
+    "autoload": {
+        "psr-0": { "Services\\Librato": "library/" }
+    },
     "require": {
         "php": ">=5.3.0",
 		"pear-pear/HTTP_Request2": "2.1.1"
