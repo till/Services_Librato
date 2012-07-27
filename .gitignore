@@ -1,3 +1,4 @@
 examples/config.php
 .idea
 vendor
+composer.phar
