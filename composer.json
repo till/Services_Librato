@@ -1,0 +1,25 @@
+{
+    "name":"till/services_librato",
+    "description": "PHP API wrapper for Librato's metric service",
+    "license": "BSD-2-Clause",
+    "authors":[
+        {
+            "name": "Till Klampaeckel",
+            "email": "till@php.net"
+        },
+        {
+            "name":"Contributors",
+            "homepage":"https://github.com/till/Services_Librato/graphs/contributors"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+		"pear-pear/HTTP_Request2": "2.1.1"
+    }
+}
