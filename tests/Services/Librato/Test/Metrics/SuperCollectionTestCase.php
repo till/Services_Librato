@@ -28,7 +28,7 @@ class SuperCollectionTestCase extends \PHPUnit_Framework_TestCase
         $superCollection->accept($gauges)->accept($counters);
 
         $payLoad = $superCollection->toArray();
-        var_dump(json_encode($payLoad));
-
+        //var_dump(json_encode($payLoad));
+		$this->markTestIncomplete("Not done yet!");
     }
 }
