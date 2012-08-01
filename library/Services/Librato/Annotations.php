@@ -51,19 +51,21 @@ class Annotations extends Librato
     /**
      * Create an annotation event.
      *
-     * @todo add links?
-     *
      * @param string $stream      the annotation stream (doesn't need to exist)
      * @param string $title       the annotation title
      * @param string $source      the annotation source
      * @param string $description the annotation description
      * @param int    $start_time  Unix timestamp for the start of the event
      * @param int    $end_time    Unix timestamp for the end of the event
+     * @param string $rel         the annotation link relationship
+     * @param string $href        the annotation link URL
+     * @param string $label       the annotation link label
      *
      * @return boolean
      */
     public function create($stream, $title, $source = null, $description = null,
-                           $start_time = null, $end_time = null)
+                           $start_time = null, $end_time = null, $rel = null,
+                           $href = null, $label = null)
     {
         if ( (empty($stream)) or (empty($title)) ) {
             throw new \InvalidArgumentException('Cannot be empty.');
@@ -82,8 +84,34 @@ class Annotations extends Librato
         if ($end_time !== null) {
             $payLoad['end_time'] = $end_time;
         }
+        if ($rel !== null) {
+            $payLoad['rel'] = $rel;
+        }
+        if ($href !== null) {
+            $payLoad['href'] = $href;
+        }
+        if ($label !== null) {
+            $payLoad['label'] = $label;
+        }
 
         $response = $this->makeRequest('/annotations/' . $stream, Request2::METHOD_POST, $payLoad);
         return ($response->getStatus() == 201);
+    }
+
+    /**
+     * Return an annotation - returns all annotations if no parameter is set.
+     *
+     * @param mixed $name
+     *
+     * @return stdClass
+     */
+    public function get($name = null)
+    {
+        $uri = '/annotations';
+        if (!empty($name)) {
+            $uri .= '/' . $name;
+        }
+        $response = $this->makeRequest($uri);
+        return $this->parseResponse($response);
     }
 }
