@@ -86,39 +86,4 @@ class Annotations extends Librato
         $response = $this->makeRequest('/annotations/' . $stream, Request2::METHOD_POST, $payLoad);
         return ($response->getStatus() == 201);
     }
-
-    /**
-     * Issue a request against the REST API.
-     *
-     * @param string $uri     (absolute)
-     * @param string $method  A constant from {@link \HTTP_Request}
-     * @param mixed  $payLoad Payload.
-     *
-     * @return HttpResponse
-     */
-    protected function makeRequest($uri, $method = Request2::METHOD_GET, $payLoad = null)
-    {
-        try {
-            $req = $this->getRequest($this->user, $this->apiKey)
-                ->setUrl($this->endpoint . $uri)
-                ->setMethod($method);
-
-            /**
-             * @desc This is a hack, but why would you not use JSON?
-             */
-            if ($method == Request2::METHOD_POST) {
-                $req->setHeader('Content-Type: application/json');
-            }
-            if ($payLoad !== null) {
-                $req->setBody(json_encode($payLoad));
-            }
-
-            $response = $req->send();
-
-            return $response;
-
-        } catch (HttpException $e) {
-            throw new Exception("Most likely a runtime issue.", null, $e);
-        }
-    }
 }
