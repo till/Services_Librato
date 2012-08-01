@@ -46,6 +46,10 @@ class Metrics extends Librato
      */
     public function __construct($user, $apiKey)
     {
+        if ( (empty($user)) or (empty($apiKey)) ) {
+            throw new \InvalidArgumentException('Cannot be empty.');
+        }
+
         $this->user   = $user;
         $this->apiKey = $apiKey;
     }

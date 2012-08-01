@@ -29,7 +29,7 @@ abstract class Librato
             $this->req = $mixed;
             return $this;
         }
-        throw new \InvalidArgumentException("Unknown value.");
+        throw new \InvalidArgumentException('Unknown value.');
     }
 
     /**
@@ -80,7 +80,7 @@ abstract class Librato
             return $response;
 
         } catch (HttpException $e) {
-            throw new \Exception("Most likely a runtime issue.", null, $e);
+            throw new \Exception('Most likely a runtime issue.', null, $e);
         }
     }
 
@@ -89,51 +89,38 @@ abstract class Librato
      *
      * @param HttpResponse $response
      *
-     * @return stdClass
+     * @return stdClass (if it can't parse the JSON, it will create
+     *                  a new stdClass)
      * @throws \RuntimeException When the API returns an error.
      */
     protected function parseResponse(HttpResponse $response)
     {
         $json = $response->getBody();
-        $body = @json_decode($json);
+        $body = $bodyfix = @json_decode($json);
+        if (empty($bodyfix)) {
+            $bodyfix = new stdClass;
+            $bodyfix->empty = 'yes';
+        }
 
-        // evaluate response status etc.
-        if ($response->getStatus() != 200) {
+        if ($response->getStatus() == 200) {
+            return $bodyfix;
+        }
 
-            $message = '';
-
-            if ($body === false || $body === null) {
-                $message .= $json;
-            } else {
-
-                $errors = $body->errors;
-                foreach ($errors as $error) {
-                    if (!empty($message)) {
-                        $message .= ', ';
-                    }
-                    if (is_string($error)) {
-                        $message .= $error;
-                    } elseif ($error instanceof \stdClass) {
-                        $error = (array) $error;
-                        foreach ($error as $k => $v) {
-                            if (!empty($message)) {
-                                $message .= ', ';
-                            }
-                            $message .= "{$k}: ";
-                            if (is_array($v)) {
-                                $message .= implode(', ', $v);
-                            } else {
-                                $message .= $v;
-                            }
-                        }
-                    } else {
-//                        var_dump($error); exit;
-                        $message .= implode(', ', $error);
-                    }
+        $message = '';
+        if ($body === false || $body === null) {
+            $message = $json;
+        } else {
+            $errors = $body->errors;
+            foreach ($errors as $error) {
+                if (!empty($message)) {
+                    $message .= ', ';
+                }
+                if (is_string($error)) {
+                    $message .= $error;
                 }
             }
-            throw new \RuntimeException($message);
         }
-        return $body;
+        throw new \RuntimeException($message);
+        return $bodyfix;
     }
 }
