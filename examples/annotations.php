@@ -15,6 +15,6 @@ $annotations = new Annotations(
 /**
  * @desc Publish some annotations!
  */
-var_dump($annotations->get('test-stream'));
+// var_dump($annotations->get('test-stream', 52));
 var_dump($annotations->create('test-stream', 'test-title1', 'test-source', 'test-desc', time() - 60, time() - 5));
 var_dump($annotations->create('test-stream', 'test-title2'));

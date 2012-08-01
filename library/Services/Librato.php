@@ -80,7 +80,7 @@ abstract class Librato
             return $response;
 
         } catch (HttpException $e) {
-            throw new Exception("Most likely a runtime issue.", null, $e);
+            throw new \Exception("Most likely a runtime issue.", null, $e);
         }
     }
 

@@ -61,6 +61,8 @@ class Annotations extends Librato
      * @param string $href        the annotation link URL
      * @param string $label       the annotation link label
      *
+     * @todo the annotation link support doesn't work, don't know why
+     *
      * @return boolean
      */
     public function create($stream, $title, $source = null, $description = null,
@@ -99,13 +101,13 @@ class Annotations extends Librato
     }
 
     /**
-     * Return an annotation - returns all annotations if no parameter is set.
+     * Return an annotation stream - returns all annotation streams if no parameter is set.
      *
      * @param mixed $name
      *
      * @return stdClass
      */
-    public function get($name = null)
+    public function getStream($name = null)
     {
         $uri = '/annotations';
         if (!empty($name)) {
@@ -113,5 +115,34 @@ class Annotations extends Librato
         }
         $response = $this->makeRequest($uri);
         return $this->parseResponse($response);
+    }
+
+    /**
+     * Return an annotation.
+     *
+     * @param string $name
+     * @param int    $id
+     *
+     * @return stdClass
+     */
+    public function get($name, $id)
+    {
+        $uri = "/annotations/$name/$id";
+        $response = $this->makeRequest($uri);
+        return $this->parseResponse($response);
+    }
+
+    /**
+     * Delete an annotation stream.
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function deleteStream($name)
+    {
+        $uri = "/annotations/$name";
+        $response = $this->makeRequest($uri, Request2::METHOD_DELETE);
+        return ($response->getStatus() == 204);
     }
 }

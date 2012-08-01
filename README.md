@@ -1,6 +1,6 @@
 ## Services\Librato
 
-This is a work in progress where I implement the Librato API as I move forward.
+This is a work in progress where we implement the Librato API as we move forward.
 
 Current work in progress: `Services\Librato\Metrics`:
 
@@ -55,6 +55,15 @@ If you'd like to mix counters and gauges and submit them in one request (preferr
     var_dump($metrics->update($counters)); // should output 'true'
 
 For more, check out the examples directory!
+
+## Services\Librato\Annotations
+
+One can also create and retrieve annotations. Here is an example:
+
+    <?php
+    use Services\Librato\Annotations;
+    $annotations = new Annotations($user, $apiKey);
+    $annotations->create('streamName', 'title', 'source', 'desc', time() - 60, time() - 5);
 
 ## License
 
