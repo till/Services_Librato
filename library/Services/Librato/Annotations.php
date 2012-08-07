@@ -115,7 +115,7 @@ class Annotations extends Librato
     {
         $uri = '/annotations';
         if (!empty($name)) {
-            $uri .= '/' . $name;
+            $uri .= '/' . $name . '?count=99999';
         }
         $response = $this->makeRequest($uri);
         return $this->parseResponse($response);
