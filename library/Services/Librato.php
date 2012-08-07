@@ -88,16 +88,17 @@ abstract class Librato
      * Parse the response!
      *
      * @param HttpResponse $response
+     * @param bool         $assocParse
      *
      * @return stdClass
-
+     *
      * @throws \RuntimeException         When the API returns an error.
      * @throws \UnexpectedValueExpection When the body is not proper JSON.
      */
-    protected function parseResponse(HttpResponse $response)
+    protected function parseResponse(HttpResponse $response, $assocParse = false)
     {
         $json = $response->getBody();
-        $body = @json_decode($json);
+        $body = @json_decode($json, $assocParse);
         if (empty($body)) {
             throw new \UnexpectedValueException('body is not proper JSON, status=' . $response->getStatus() . ', body=' . $json);
         }
