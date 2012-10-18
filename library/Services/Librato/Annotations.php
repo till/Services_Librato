@@ -2,6 +2,7 @@
 namespace Services\Librato;
 
 use \Services\Librato;
+use \Services\Librato\Annotations\Annotation;
 
 use \HTTP_Request2 as Request2;
 use \HTTP_Request2_Response as HttpResponse;
@@ -73,34 +74,22 @@ class Annotations extends Librato
                            $start_time = null, $end_time = null, $rel = null,
                            $href = null, $label = null)
     {
-        if ( (empty($stream)) or (empty($title)) ) {
-            throw new \InvalidArgumentException('Cannot be empty.');
-        }
 
-        $payLoad = array('title' => $title);
-        if ($source !== null) {
-            $payLoad['source'] = $source;
-        }
-        if ($description !== null) {
-            $payLoad['description'] = $description;
-        }
-        if ($start_time !== null) {
-            $payLoad['start_time'] = $start_time;
-        }
-        if ($end_time !== null) {
-            $payLoad['end_time'] = $end_time;
-        }
-        if ($rel !== null) {
-            $payLoad['rel'] = $rel;
-        }
-        if ($href !== null) {
-            $payLoad['href'] = $href;
-        }
-        if ($label !== null) {
-            $payLoad['label'] = $label;
-        }
+        $annotation              = new Annotation($title, $stream);
+        $annotation->source      = $source;
+        $annotation->description = $description;
+        $annotation->start_time  = $start_time;
+        $annotation->end_time    = $end_time;
+        $annotation->rel         = $rel;
+        $annotation->href        = $href;
+        $annotation->label       = $label;
 
-        $response = $this->makeRequest('/annotations/' . $stream, Request2::METHOD_POST, $payLoad);
+        $response = $this->makeRequest(
+            '/annotations/' . $annotation->getStream(),
+            Request2::METHOD_POST,
+            $annotation->toArray()
+        );
+
         return ($response->getStatus() == 201);
     }
 
