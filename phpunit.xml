@@ -1,4 +1,7 @@
-<phpunit colors="true" bootstrap="./tests/TestInit.php">
+<phpunit colors="true" bootstrap="./tests/TestInit.php" debug="true">
+  <testsuite name="Annotation">
+    <file>./tests/Services/Librato/Test/AnnotationTestCase.php</file>
+  </testsuite>
   <testsuite name="Metric">
     <file>./tests/Services/Librato/Test/MetricTestCase.php</file>
   </testsuite>
