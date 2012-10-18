@@ -56,12 +56,23 @@ class Annotation
      * @param string $value
      *
      * @return $this
+     *
+     * @throws \InvalidArgumentException When unknown variable is set.
+     * @throws \InvalidArgumentException When the timestamp value is not an int.
      */
     public function __set($var, $value)
     {
         if (false === array_key_exists($var, $this->payLoad)) {
             throw new \InvalidArgumentException("Cannot set '$var'.");
         }
+
+        static $timestamps = array('start_time', 'end_time');
+        if (true === in_array($var, $timestamps)) {
+            if (false === is_int($value)) {
+                throw new \InvalidArgumentException("Value for '$var' must be a unix timestamp.");
+            }
+        }
+
         $this->payLoad[$var] = $value;
         return $this;
     }
