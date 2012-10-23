@@ -9,13 +9,15 @@ class AnnotationTestCase extends \PHPUnit_Framework_TestCase
     {
         $ts = time();
 
-        $annotation = new Annotation('title', 'stream');
-        $annotation->start_time = $ts;
+        $annotation              = new Annotation('title', 'stream');
+        $annotation->start_time  = $ts;
+        $annotation->description = 'Example';
 
         $payLoad = $annotation->toArray();
+
         $this->assertInternalType('array', $payLoad);
         $this->assertSame('title', $payLoad['title']);
         $this->assertSame('stream', $annotation->getStream());
-        $this->assertSame(array('title' => 'title', 'start_time' => $ts), $payLoad);
+        $this->assertSame(array('title' => 'title', 'description' => 'Example', 'start_time' => $ts), $payLoad);
     }
 }

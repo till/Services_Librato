@@ -17,13 +17,14 @@ class Annotation
      * @var array
      */
     protected $payLoad = array(
-        'title'      => null,
-        'source'     => null,
-        'start_time' => null,
-        'end_time'   => null,
-        'rel'        => null,
-        'href'       => null,
-        'label'      => null,
+        'title'       => null,
+        'source'      => null,
+        'description' => null,
+        'start_time'  => null,
+        'end_time'    => null,
+        'rel'         => null,
+        'href'        => null,
+        'label'       => null,
     );
 
     /**
