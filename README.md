@@ -16,7 +16,7 @@ A metric is created with the following code:
 
     <?php
     use Services\Librato\Metrics\Metric;
-    $metric         = new Metric('counter);
+    $metric         = new Metric('counter');
     $metric->value  = 1;
     $metric->source = 'production'; // this is optional
 
